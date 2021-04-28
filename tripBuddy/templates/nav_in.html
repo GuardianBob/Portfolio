@@ -1,0 +1,13 @@
+<div class="row mx-1">
+    <div class="col-md-12 justify-content-between">
+        <nav class="navbar navbar-light bg-light "> 
+            <div class="col-md-3 navbar-brand">Hello {{ user_name }}! {{ nav_title }}</div>
+            <div class="col-md-3.5 align-content-end">                        
+                <a class="nav-item btn btn-light" href="/dashboard">Dashboard</a>
+                <!-- <a class="nav-item btn btn-light" href="/users/show/{{ user_link }}" id="view_profile">Profile</a> -->
+                <a href="/trips/new" class="nav-item btn btn-primary">Create a new trip!</a>
+                <a class="nav-item btn btn-light ml-3" href="/logout">Log off</a>
+            </div>
+        </nav>
+    </div>
+</div>

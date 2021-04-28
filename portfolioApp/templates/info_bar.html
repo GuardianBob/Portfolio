@@ -1,0 +1,86 @@
+{% load static %}
+<!-- <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" data-auto-replace-svg="nest"></script> -->
+<script src="https://kit.fontawesome.com/ca0fd4bf05.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="{% static 'css/prism.css' %}">
+<script src="{% static 'js/prism.js' %}"></script>
+
+<div class="row mx-2 justify-content-end">
+    <span onclick="openNav()">
+        <button class="btn btn-secondary" id="openInfo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+            </svg>
+            App Info
+        </button>            
+    </span>
+</div>
+<div id="mySideNav" class="sidenav justify-content-end pb-4">
+    <div class="row m-2">
+        <div class="col align-middle">   
+            <a href="javascript:void(0)" class="link-light" onclick="closeNav()">
+                <i class="fas fa-window-close fa-w-16 fa-2x text-light"></i>
+            </a>
+            <span class="align-top text-light fs-4 pt-2"><b>Close</b></span>
+        </div> 
+    </div>
+    <div class="row mx-4 text-light ">        
+        <div class="col-md-12 text-center">
+            <h4>{% block title %}{{ page_title }}{% endblock %}</h4>
+        </div>
+        <div class="col-md-12 text-center align-middle">
+            {% block source %}
+            <a href="https://github.com/GuardianBob/Python/tree/main/Django/django_fullstack/loginNew" class="" style="height:70px;" target="_blank">            
+                <i class="fab fa-github-square fa-2x"></i> Source Code
+            </a>
+            {% endblock %}
+        </div>
+    </div>
+    <div class="row mx-4 text-light ">        
+        <div class="col-md-8">
+            <h5>Back-end:</h5>
+        </div>
+        <div class="col-md-8">
+            <ul class="list-group list-group-horizontal-md bg-dark">
+                <li class="list-group-item bg-dark border-secondary text-center">Python <br><i class="fab fa-python fa-2x"></i></li>
+                <li class="list-group-item bg-dark border-secondary text-center">Django <br><i class="fab fa-python fa-2x"></i></li>
+                <li class="list-group-item bg-dark border-secondary text-center">SQL <br><i class="fas fa-database fa-2x"></i></li>
+                {% block back_end %}
+                {% endblock %}
+            </ul>
+        </div>  
+        <div class="col-md-8">
+            <h5>Front-end:</h5>
+        </div>
+        <div class="col-md-8">
+            <ul class="list-group list-group-horizontal-md bg-dark">
+                {% block front_end %}
+                {% endblock %}
+                <li class="list-group-item bg-dark border-secondary text-center">Bootstrap <br><i class="fab fa-bootstrap fa-2x"></i></li>
+                <li class="list-group-item bg-dark border-secondary text-center">HTML5 <br><i class="fab fa-html5 fa-2x"></i> </li>
+                <li class="list-group-item bg-dark border-secondary text-center">CSS3 <br><i class="fab fa-css3-alt fa-2x"></i></li>
+                
+            </ul>
+        </div> 
+        {% block libraries %}
+        
+        {% endblock %}  
+        <div class="col-md-12 mb-4">
+            <div class="col-md-8">
+                <h5>Description:</h5>
+            </div>    
+            <div class="col-md-12">
+                {% block description %}
+                    
+                {% endblock %}
+                <p class="fs-6 link-info"><i>(click <i class="far fa-file-code fa-2x" ></i> to expand snippets.)</i></p>
+                {% block snippets %}          
+                {% endblock %}
+            </div>
+        </div>   
+    </div>
+</div>   
+
+{% block scripts %}
+{% endblock %}

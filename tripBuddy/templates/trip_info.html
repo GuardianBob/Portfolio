@@ -1,0 +1,150 @@
+{% extends "info_bar.html" %}
+{% load static %}
+
+{% block title %}
+Trip Planning App 
+{% endblock %}
+
+{% block source %}
+<a href="https://github.com/GuardianBob" class="" style="height:70px;" target="_blank">
+    <i class="fab fa-github-square fa-2x"></i>
+</a>
+{% endblock %}
+
+{% block back_end %}
+{% endblock %}
+
+{% block front_end %}
+<li class="list-group-item bg-dark border-secondary text-center">Javascript<br><i class="fab fa-js-square fa-2x"></i></li>
+<li class="list-group-item bg-dark border-secondary text-center">JQuery <br><img src="{% static 'img/JQuery_Logo_White.png' %}" alt="" width="50%"></li>
+{% endblock %}
+
+{% block libraries %}
+{% endblock %}
+
+{% block description %}
+<div class="col-md-10 my-2">
+    <h6><i>Objectives:</i></h6>
+    <ul class="list-group list-group-flush bg-dark"> 
+        <li class="list-group-item bg-dark border-secondary">Create web-app for Belt Exam: </li>
+        <li class="list-group-item bg-dark border-secondary">&nbsp;&nbsp;&nbsp;&nbsp;Orange Belt: Complete within 24 hours.</li>
+        <li class="list-group-item bg-dark border-secondary">&nbsp;&nbsp;&nbsp;&nbsp;Red Belt: Complete within 5 hours.</li>
+        <li class="list-group-item bg-dark border-secondary">&nbsp;&nbsp;&nbsp;&nbsp;Black Belt: Complete within 5 hours and deploy.</li>
+    </ul>
+</div>
+<div class="col-md-10 my-2">
+    <h6><i>Rank Achieved:</i></h6>
+    <ul class="list-group list-group-flush bg-dark"> 
+        <li class="list-group-item bg-dark border-secondary">Black Belt</li>
+    </ul>
+</div>
+<div class="col-md-10 my-2">
+    <h6><i> Orange/Red Belt Requirements:</i></h6>
+    <ul class="list-group list-group-flush bg-dark"> 
+        <li class="list-group-item bg-dark border-secondary">Display trips created by current user.</li>
+        <li class="list-group-item bg-dark border-secondary">Destination links should redirect to trip detail page.</li>
+        <li class="list-group-item bg-dark border-secondary">Allow user to edit/remove trips they created.</li>
+        <li class="list-group-item bg-dark border-secondary">New Trip button should redirect to create trip page.</li>
+        <li class="list-group-item bg-dark border-secondary">Valiate user input for creating/editing a trip.</li>
+        <li class="list-group-item bg-dark border-secondary">Display error messages for any input errors.</li>
+        <li class="list-group-item bg-dark border-secondary">Display trip details on trip detail page.</li>
+    </ul>
+</div>
+<div class="col-md-10 my-2">
+    <h6><i> Black Belt Requirements:</i></h6>
+    <ul class="list-group list-group-flush bg-dark"> 
+        <li class="list-group-item bg-dark border-secondary">Complete all Orange/Red Belt requirements.</li>
+        <li class="list-group-item bg-dark border-secondary">Allow users to join trips created by other users.</li>
+        <li class="list-group-item bg-dark border-secondary">Include a 2nd table listing trips created by other users.</li>
+        <li class="list-group-item bg-dark border-secondary">Include a "Join" link for each trip.</li>
+        <li class="list-group-item bg-dark border-secondary">Clicking "Join" moves the trip into the current user's table of trips.</li>
+        <li class="list-group-item bg-dark border-secondary">Allow user to cancel joined trips, moving trip back to otehr table.</li>
+        <li class="list-group-item bg-dark border-secondary">Pre-populate form on Edit Trip page with trip details.</li>
+        <li class="list-group-item bg-dark border-secondary">Display people who have joined the trip on Trip Details page.</li>
+        <li class="list-group-item bg-dark border-secondary">Do not include creator in list of those that joined.</li>
+        <li class="list-group-item bg-dark border-secondary">Ensure start date is in the future on create/edit form.</li>
+        <li class="list-group-item bg-dark border-secondary">Ensure end date is after start date on create/edit form.</li>
+    </ul>
+</div>
+    <p>
+        
+    </p> 
+    {% endblock %}
+
+    {% block snippets %}      
+    <div class="row">
+        <div>
+            <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_1')">
+                <i class="far fa-file-code fa-2x" ></i> 
+                Django: Create Trip Table: <br>
+            </a>
+        </div>
+        <div class="code_block mb-4 w-100" id="block_1">   
+<pre><code class="language-django text-left">&lt;tbody&gt;
+    &#123;% for trip in user.planned_trips.all %&#125;
+        &lt;tr&gt;
+            &lt;td&gt;&lt;a href='&#123;% url "trip_info" trip.id %&#125;'&gt;&#123;&#123; trip.destination &#125;&#125;&lt;/a&gt;&lt;/td&gt;
+            &lt;td&gt;&#123;&#123; trip.start_date|date:"F jS Y" &#125;&#125;&lt;/td&gt;
+            &lt;td&gt;&#123;&#123; trip.end_date|date:"F jS Y" &#125;&#125;&lt;/td&gt;
+            &lt;td&gt;&#123;&#123; trip.details &#125;&#125;&lt;/td&gt;
+            &lt;td&gt;
+                &#123;% if trip.planned_by.id == user.id %&#125;
+                    &lt;a href='&#123;% url "edit_trip" trip.id %&#125;'&gt;Edit&lt;/a&gt;
+                    &lt;span&gt; | &lt;/span&gt;
+                    &lt;a href='&#123;% url "delete_trip" trip.id %&#125;'&gt;Remove&lt;/a&gt;
+                &#123;% else %&#125;
+                &lt;a href='&#123;% url "cancel_trip" trip.id %&#125;'&gt;Cancel&lt;/a&gt;
+                &#123;% endif %&#125;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &#123;% endfor %&#125;
+    &#123;% for trip in user.extra_trips.all %&#125;
+        &lt;tr&gt;
+            &lt;td&gt;&lt;a href='&#123;% url "trip_info" trip.id %&#125;'&gt;&#123;&#123; trip.destination &#125;&#125;&lt;/a&gt;&lt;/td&gt;
+            &lt;td&gt;&#123;&#123; trip.start_date|date:"F jS Y" &#125;&#125;&lt;/td&gt;
+            &lt;td&gt;&#123;&#123; trip.end_date|date:"F jS Y" &#125;&#125;&lt;/td&gt;
+            &lt;td&gt;&#123;&#123; trip.details &#125;&#125;&lt;/td&gt;
+            &lt;td&gt;
+                &#123;% if trip.planned_by.id == user.id %&#125;
+                    &lt;a href='&#123;% url "edit_trip" trip.id %&#125;'&gt;Edit&lt;/a&gt;
+                    &lt;span&gt; | &lt;/span&gt;
+                    &lt;a href='&#123;% url "delete_trip" trip.id %&#125;'&gt;Remove&lt;/a&gt;
+                &#123;% else %&#125;
+                &lt;a href='&#123;% url "cancel_trip" trip.id %&#125;'&gt;Cancel&lt;/a&gt;
+                &#123;% endif %&#125;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &#123;% endfor %&#125;
+&lt;/tbody&gt;</code></pre>
+    <br><br>
+</div>  
+</div>   
+
+<div class="row">
+    <div>
+        <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_2')">
+            <i class="far fa-file-code fa-2x" ></i> 
+            Create New Trip: <br>
+        </a>
+    </div>
+    <div class="code_block mb-4 w-100" id="block_2">
+<pre><code class="language-python text-left">def create_trip(request):
+    if request.method != "POST":
+        return redirect("/trips/new")
+    if not 'user_id' in request.session:
+        return redirect('/')
+    user = User.objects.get(id=request.session['user_id'])
+    check_form = TripForm(request.POST)
+    if not check_form.is_valid():
+        # print(check_form)
+        context = {
+            'form': check_form, 
+            'action': 'create'                  
+            }
+        return render_trip_page(request, context)
+    trip = Trip.objects.create(destination=request.POST['destination'], start_date=request.POST['start_date'], end_date=request.POST['end_date'], details=request.POST['details'], planned_by=user)
+    return redirect('/tripbuddy')</code></pre>   
+    <br><br>
+</div>  
+</div> 
+{% endblock %}

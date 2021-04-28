@@ -1,0 +1,90 @@
+{% extends "info_bar.html" %}
+
+{% block title %}
+Favorite Books App
+{% endblock %}
+
+{% block source %}
+<a href="https://github.com/GuardianBob/Python/tree/main/Django/django_fullstack/dojoReads_New" class="" style="height:70px;" target="_blank">
+    <i class="fab fa-github-square fa-2x"></i> Source Code
+</a>
+{% endblock %}
+
+{% block back_end %}
+{% endblock %}
+
+{% block front_end %}
+{% endblock %}
+
+{% block libraries %}
+{% endblock %}
+
+{% block description %}
+    <div class="col-md-10 my-2">
+        <h6><i>Objectives:</i></h6>
+        <ul class="list-group list-group-flush bg-dark"> 
+            <li class="list-group-item bg-dark border-secondary">Allow users to add books with reviews.</li>
+            <li class="list-group-item bg-dark border-secondary">Allow users to delete their reviews.</li>
+            <li class="list-group-item bg-dark border-secondary">Display latest three reviews on the front page.</li>
+        </ul>
+    </div>
+    <div class="col-md-10 my-2">
+        <h6><i>Additional:</i></h6>
+        <ul class="list-group list-group-flush bg-dark"> 
+            <li class="list-group-item bg-dark border-secondary">Utilize Django forms for input validation and standardization</li>
+            <li class="list-group-item bg-dark border-secondary">Display review ratings in stars with django templating engine.</li> 
+            <li class="list-group-item bg-dark border-secondary">Verify Authors don't exist in database prior to adding them.</li>       
+        </ul>
+    </div>
+    <p>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This was an optional assignment used as a practice for the final full-stack Python exam.  The goal was to be able to 
+        finish building this web-app within a specific time-period in order to pass: higher grades required shorter times for completion.  <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The user should be able to log in utilizing the <a href="/login/login">login application</a> where they would be taken to the home page
+        which displays the three most recent book reviews along with a list of all books that have been added to the database. <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Users are able to add books, add reviews to other books, delete their own reviews, and even add books to a list of their favorites. <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The web-app utilizes multiple database tables linked together by one-to-many and many-to-many relationships. 
+    </p>
+    {% endblock %}
+
+    {% block snippets %}      
+    <div class="row">
+        <div>
+            <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_1')">
+                <i class="far fa-file-code fa-2x" ></i> 
+                Django Model (Database Structure): <br>
+            </a>
+        </div>
+        <div class="code_block mb-4 w-100" id="block_1">
+        <pre>
+<code class="language-python text-left mb-1">class Book(models.Model):
+    title = models.CharField(max_length=255)
+    desc = models.TextField(blank=True)
+    uploaded_by = models.ForeignKey(User, related_name='books_uploaded', on_delete=models.CASCADE)
+    liked_by = models.ManyToManyField(User, related_name="liked_books", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = CheckBook()</code></pre>  
+        <br><br>
+        </div>  
+    </div>
+
+    <div class="row">
+        <div>
+            <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_2')">
+                <i class="far fa-file-code fa-2x" ></i> 
+                Stars With Django Templating Engine: <br>
+            </a>
+        </div>
+        <div class="code_block mb-4 w-100" id="block_2">
+        <pre>
+<code class="language-django text-left mb-1">&lt;span&gt;Rating: &lt;/span&gt;
+    &#123;% with ''|center:review.rating as range %&#125;
+        &#123;% for _ in range %&#125;
+            &lt;!-- Using star icon from Font Awesome --&gt;
+            &lt;span class="fa fa-star checked" style="color:gold;"&gt;&lt;/span&gt;
+        &#123;% endfor %&#125;
+    &#123;% endwith %&#125;</code></pre>  
+        <br><br>
+        </div>  
+    </div>     
+{% endblock %}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/loginstyle.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <script src="{% static 'js/nav.js' %}"></script>
+    <title>{{ page_title }}</title> 
+    <script>
+        $(document).ready(function() {
+            
+            $('#nav_links').prepend('<li class="nav-item"><a class="nav-item btn btn-outline-light ml-2" href="{% url "new_trip" %}">New Trip</a></li>');
+            $('#nav_links').prepend('<li class="nav-item"><a class="nav-item btn btn-outline-light ml-2" href="{% url "trip_dash" %}">All Trips</a></li>');
+
+            $("#id_start_date").on("change",function(){
+                var end = new Date($(this).val());
+                end.setDate(end.getDate()+1);
+                const formatYmd = date => date.toISOString().slice(0, 10);
+                var newEnd = formatYmd(end)
+                $('#id_end_date').val(newEnd);
+            });
+        });
+        
+    </script>
+</head>
+<body>
+    <div class="navigation">
+        {% block navbar %}
+        {% include 'nav_demo.html' %}
+        {% endblock navbar%}
+    </div>
+    <div class="info_bar">
+        {% block infobar %}
+        {% include 'trip_info.html' %}
+        {% endblock infobar %}
+    </div>
+    <div class="row mx-1">
+        <div class="col-md-10">
+            <h4>{{ form_title }}</h4><br>
+            <p class="text-success" id="">{{ update }}</p>
+        </div>
+    </div>
+    <div class="row justify-content-around mx-1">        
+        <div class="col-md-3 justify-content-center">
+            <h6>Information</h6>
+            <form action="{{ action }}" method="POST" id="trip_update">
+                {% csrf_token %}
+                <div class="form-group">
+                    
+                    {{ form }}
+                    <input type="trip_id" name="trip_id" id="trip_id" class="form-control mb-1" value="{{ trip.id }}" hidden>
+                    <div class="row justify-content-end px-3">
+                        <a href='{% url "trip_dash" %}' class="btn btn-outline-secondary px-2 my-2 mx-2"> Cancel</a>
+                        <input type="submit" value="Save" class="px-2 my-2 btn btn-success" id="submit">
+                    </div>
+                </div>
+            </form>            
+        </div>        
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/loginstyle.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>{{ page_title }}</title>
+</head>
+<body>
+    <div class="navigation">
+        {% block navbar %}
+        {% include nav with user_name=user.first_name nav_title=nav_title %}
+        {% endblock navbar%}
+    </div>
+    <div class="row justify-content-center mx-1">
+        <h3> Oops, that page doesn't exist! </h3>        
+    </div>
+</body>
+</html>

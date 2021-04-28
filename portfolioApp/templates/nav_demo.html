@@ -1,0 +1,40 @@
+{% load static %}
+<div class="row px-0" style="margin: auto;" id="navigation">
+    <img src="{% static 'img/python_settings_white.png' %}" alt="click to hide" id="nav_logo_hidden" height="55px" class="align-top bg-dark fixed-top" data-bs-toggle="tooltip" data-bs-placement="top" title="Toggle Nav Menu">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-sm fixed-top" id="nav-bar">             
+        <!-- <div class="container-flex">                 -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav_menu" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="nav_menu">                    
+                    <div class="navbar-brand align-center">
+                        <img src="{% static 'img/python_settings_white.png' %}" alt="click to hide" id="nav_logo" height="35px" class="align-top bg-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Toggle Nav Menu">                        
+                        <a href="https://guardianbob.github.io/" class="text-light"><span id="my_name">Jesse Meyer</span></a>
+                        <span id="my_certs"> MSMIS / PMP / CSM / Full-Stack Developer </span>
+                    </div>     
+                <ul class="navbar-nav" id="nav_links">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="https://guardianbob.github.io/">Portfolio Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="https://guardianbob.github.io/#about">About</a>
+                    </li>
+                    <li class="nav-item dropdown bg-dark">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Projects
+                        </a>
+                        <ul class="dropdown-menu bg-dark text-light dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item text-light" href="/login/login">Login App</a></li>
+                            <li><a class="dropdown-item text-light" href="/login/">Dashboard App</a></li>
+                            <li><a class="dropdown-item text-light" href="/books/"">Book Review App</a></li>
+                            <li><a class="dropdown-item text-light" href="/tmdbsearch/">Random Movie App</a></li>
+                            <li><a class="dropdown-item text-light" href="/tripbuddy/">Trip Planning App</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        <!-- </div> -->
+    </nav>
+</div>
+<div class="row mt-5"></div>
+<div class="row mt-4"></div>

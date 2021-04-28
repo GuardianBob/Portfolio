@@ -1,0 +1,75 @@
+{% extends "login_info.html" %}
+
+{% block snippets %}
+<div class="row">
+    <div>
+        <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_1')">
+            <i class="far fa-file-code fa-2x" ></i> 
+            Password Match Validation: <br>
+        </a>
+    </div>
+    <div class="code_block mb-4" id="block_1">
+    <pre>
+<code class="language-javascript text-left mb-1">function checkPass() {
+    var reg_pass = $("#reg_password").val();
+    var checkPass = $("#check_pass_r").val();            
+    if ($("#check_pass_r").val() == $("#reg_password").val()) {
+        $("#c_pass").html("");
+        $("#submit").attr("disabled", false);
+    } else {
+        $("#c_pass").html("Passwords do not match!");
+        $("#submit").attr("disabled", true);
+    }
+}</code></pre>  
+    <br><br>
+    </div>
+</div>
+
+<div class="row">
+    <div>
+        <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_2')">
+            <i class="far fa-file-code fa-2x" ></i> 
+            Show Password: <br>
+        </a>
+    </div>
+    <div class="code_block mb-4 w-100" id="block_2">
+        <pre>
+<code class="language-javascript text-left mb-1">function showPass() {
+    var reg_password = document.getElementById("reg_password");
+    if (reg_password.type === "password") {
+        reg_password.type = "text";
+    } else {
+        reg_password.type = "password";
+    }
+}</code></pre>  
+        <br><br>
+    </div> 
+</div>
+
+<div class="row">
+    <div>
+        <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_3')">
+            <i class="far fa-file-code fa-2x" ></i> 
+            Django Form Customization: <br>
+        </a>
+    </div>
+    <div class="code_block mb-4 w-100" id="block_3">
+    <pre>
+<code class="language-python text-left mb-1">def __init__(self, *args, **kwargs):
+    super(Register_Form, self).__init__(*args, **kwargs)
+    for name in self.fields.keys():
+        self.fields[name].widget.attrs.update({
+            'class' : 'form-control',
+        })
+    self.fields['reg_password'].widget.attrs.update({
+        'id': 'reg_password',
+    })
+    self.fields['check_pass_r'].widget.attrs.update({
+        'class' : 'form-control',
+        'id': 'check_pass_r',
+        'onChange': 'checkPass();'
+    })</code></pre>  
+    <br><br>
+    </div>  
+</div>
+{% endblock %}

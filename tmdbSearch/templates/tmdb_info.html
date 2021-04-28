@@ -1,0 +1,155 @@
+{% extends "info_bar.html" %}
+
+{% block title %}
+Random Movie App 
+{% endblock %}
+
+{% block source %}
+<a href="https://github.com/GuardianBob/Python/tree/main/Django/tmdbDjango" class="" style="height:70px;" target="_blank">
+    <i class="fab fa-github-square fa-2x"></i> Source Code
+</a>
+{% endblock %}
+
+{% block back_end %}
+<li class="list-group-item bg-dark border-secondary text-center">API <br><i class="fas fa-cogs fa-2x"></i></li>
+<li class="list-group-item bg-dark border-secondary text-center">JSON <br>
+    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-braces" viewBox="0 0 16 16">
+        <path d="M2.114 8.063V7.9c1.005-.102 1.497-.615 1.497-1.6V4.503c0-1.094.39-1.538 1.354-1.538h.273V2h-.376C3.25 2 2.49 2.759 2.49 4.352v1.524c0 1.094-.376 1.456-1.49 1.456v1.299c1.114 0 1.49.362 1.49 1.456v1.524c0 1.593.759 2.352 2.372 2.352h.376v-.964h-.273c-.964 0-1.354-.444-1.354-1.538V9.663c0-.984-.492-1.497-1.497-1.6zM13.886 7.9v.163c-1.005.103-1.497.616-1.497 1.6v1.798c0 1.094-.39 1.538-1.354 1.538h-.273v.964h.376c1.613 0 2.372-.759 2.372-2.352v-1.524c0-1.094.376-1.456 1.49-1.456V7.332c-1.114 0-1.49-.362-1.49-1.456V4.352C13.51 2.759 12.75 2 11.138 2h-.376v.964h.273c.964 0 1.354.444 1.354 1.538V6.3c0 .984.492 1.497 1.497 1.6z"/>
+    </svg>
+</li>
+
+{% endblock %}
+
+{% block front_end %}
+{% endblock %}
+
+{% block libraries %}
+<div class="col-md-8">
+    <h5>Additional Libraries:</h5>
+</div>
+<div class="col-md-8">
+    <ul class="list-group list-group-horizontal-md bg-dark">
+        <li class="list-group-item bg-dark border-secondary text-center">tmdbsimple</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block description %}
+<div class="col-md-10 my-2">
+    <h6><i>Objectives:</i></h6>
+    <ul class="list-group list-group-flush bg-dark"> 
+        <li class="list-group-item bg-dark border-secondary">Utilize TheMovieDB.org API to search movies.</li>
+        <li class="list-group-item bg-dark border-secondary">Allow users to specify search criteria.</li>
+        <li class="list-group-item bg-dark border-secondary">Parse JSON results.</li>
+        <li class="list-group-item bg-dark border-secondary">Return random results based on criteria.</li>
+        <li class="list-group-item bg-dark border-secondary">Fetch movie posters from JSON and display along with titles.</li>
+    </ul>
+</div>
+<div class="col-md-10 my-2">
+    <h6><i>To-Do:</i></h6>
+    <ul class="list-group list-group-flush bg-dark"> 
+        <li class="list-group-item bg-dark border-secondary">Update to include searching for TV shows.</li>
+    </ul>
+</div>
+<p>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This web-app is a side project built to practice utilizing API through Python.  
+    Utilizes TheMovieDB.org's open source API to pull movie information from their databases, saving time and space from trying to build
+    a massive catalog of movies.  Results are returned as JSON and parsed with Python to pull movie titles, ratings, and poster image locations.  
+    Results are then filtered to ensure that all genres that were selected in the search criteria are included in the movie's genres.  TMDB will return 
+    movies that include at least a single genre from those selected, making for a longer list of several unwanted titles.  Utilizing Python scripts, movies 
+    are then randomly selected from the filtered list and displayed on the results page.
+
+</p>    
+{% endblock %}
+
+{% block snippets %}      
+<div class="row">
+    <div>
+        <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_2')">
+            <i class="far fa-file-code fa-2x" ></i> 
+            Parse API JSON Results: <br>
+        </a>
+    </div>
+    <div class="code_block mb-4 w-100" id="block_2">
+<pre><code class="language-python text-left">def get_movies(postData):
+    discover = tmdb.Discover()
+    genres = []
+    gens = postData.getlist('genres')
+    for gen in gens:
+        genres.append(mGenres.get(gen))
+    kwargs = {
+        'with_original_language': country.get(postData['country']),
+        'sort_by': postData['sortBy'],
+        # allow for user error: if start date is later than end date or vice versa, 
+        # take the lowest year as start and highest as end.
+        'primary_release_date_gte': str(min(int(postData['startYear']), int(postData['endYear']))) + "-01-01",
+        'release_date_lte': str(max(int(postData['startYear']), int(postData['endYear']))) + "-12-31",        
+        'with_genres': genres,
+        'vote_average.gte': postData['minRating'],
+        'vote_count.gte': postData['minVotes'],        
+        'page': 1,
+    }
+    if 'adult' in postData:
+        kwargs['include_adult'] = True
+    i = 1
+    response = discover.movie(**kwargs)
+    results = []
+    oldDict = discover.results
+    # tmdb returns multiple pages of results, this loops through all of them
+    while len(discover.results) > 1:
+        kwargs['page'] = i
+        response = discover.movie(**kwargs) 
+        oldDict = discover.results        
+        # tmdb returns movies that have at least one of the genres searched for, this is not ideal
+        # filter out movies that don't contain all genres in search criteria
+        filterd_movies = [d for d in oldDict if all(x in d['genre_ids'] for x in genres)]
+        for res in filterd_movies:                         
+            results.append({
+                'title': res['title'],
+                'date': res['release_date'][:4],
+                'descr': res['overview'],
+                'rating': res['vote_average'],
+                'posterImg': posterURL + str(res['poster_path']),
+                'movieID': res['id']
+            })
+        i += 1      
+        # movies are sometimes listed on multiple pages resulting in duplicates.
+        # ensure movie isn't listed twice.
+        res_list = [i for n, i in enumerate(results) if i not in results[n + 1:]]
+    return res_list</code></pre>   
+    <br><br>
+</div>  
+</div>
+
+<div class="row">
+    <div>
+        <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_1')">
+            <i class="far fa-file-code fa-2x" ></i> 
+            Random Movie Selection: <br>
+        </a>
+    </div>
+    <div class="code_block mb-4 w-100" id="block_1">
+<pre><code class="language-python text-left">def rand_movie(postData):
+    num = []
+    movies_all = get_movies(postData)
+    movies = []
+    # Return entire list if less than 20 movies found
+    if len(movies_all) <= 20:
+        for movie in movies_all:
+            movies.append(movie)
+    else:
+        while len(movies) < 20:
+            # generates a random number excluding ones already thrown
+            rnd = random.choice([i for i in range(0,(len(movies_all)-1)) if i not in num]) 
+            # checks to make sure the movie ID isn't already in the list        
+            if not any(movie['movieID'] == movies_all[rnd]['movieID'] for movie in movies): 
+                movies.append(movies_all[rnd])
+            num.append(rnd)
+    context = {
+        'movies': movies
+    }
+    return movies</code></pre>   
+    <br><br>
+</div>  
+</div> 
+{% endblock %}

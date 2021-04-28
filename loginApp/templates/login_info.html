@@ -1,0 +1,140 @@
+{% extends "info_bar.html" %}
+{% load static %}
+
+{% block title %}
+User Login and Registration App
+{% endblock %}
+
+{% block source %}
+<a href="https://github.com/GuardianBob/Python/tree/main/Django/django_fullstack/dojoReads_New" class="" style="height:70px;" target="_blank">
+    <i class="fab fa-github-square fa-2x"></i> Source Code
+</a>
+{% endblock %}
+
+{% block back_end %}
+{% endblock %}
+
+{% block front_end %}
+<li class="list-group-item bg-dark border-secondary text-center">Javascript<br><i class="fab fa-js-square fa-2x"></i></li>
+<li class="list-group-item bg-dark border-secondary text-center">JQuery <br><img src="{% static 'img/JQuery_Logo_White.png' %}" alt="" width="50%"></li>
+{% endblock %}
+
+{% block libraries %}
+<div class="col-md-8">
+    <h5>Additional Python Libraries:</h5>
+</div>
+<div class="col-md-8">
+    <ul class="list-group list-group-horizontal-md bg-dark">                
+        <li class="list-group-item bg-dark border-secondary">bcrypt</li>                
+    </ul>
+</div>  
+{% endblock %}
+
+{% block description %}
+    <div class="col-md-10 my-2">
+        <h6><i>Objectives:</i></h6>
+    
+    <ul class="list-group list-group-flush bg-dark">                
+        <li class="list-group-item bg-dark border-secondary ">Build a login and registration page with input validation.</li> 
+        <li class="list-group-item bg-dark border-secondary">Utilize Flash messages.</li>
+        <li class="list-group-item bg-dark border-secondary">Practice with Django sessions.</li>
+    </ul>
+    </div>
+    <p>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This application was built utilizing Django's forms and template engine.  Initially, standard HTML forms were used 
+        for collecting user input along with Python functions to perform input validation checks.  Afterwards the app was 
+        updated to utilize Django forms which included built-in validation checks for input such as valid email address formating, 
+        date validation and input length validation.  <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; User input is processed through Django forms upon submission, the input is processed through Django forms and, if successful, 
+        the user is logged in.  If there are any errors, the user is returned to the form and presented with error messages describing the 
+        error.  Django forms also utilized built-in functionality to ensure all required fields are filled out before the user can submit the
+        form data. <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; JQuery is used to validate minimum password length and verify that both passwords entered in the registration page match before 
+        enabling the submit button.  <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All user information is stored in a SQLite3 database.  Passwords are encypted using bcrypt prior to being stored.  Bcrypt is 
+        used during the login process in order to encrypt the entered password and compare it to the stored encrypted password.
+        There are checkpoints written in the Python backend to ensure users cannot access pages without being logged in.
+        The app is set up so that it can quickly and easily be integrated into other Django applications.          
+    </p>
+{% endblock %}
+
+{% block snippets %}
+<div class="row">
+    <div>
+        <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_1')">
+            <i class="far fa-file-code fa-2x" ></i> 
+            Password Length Validation: 
+        </a>
+    </div><br>
+    <div class="code_block mb-4 w-100" id="block_1">
+    <pre>
+<code class="language-javascript text-left mb-1">function passEnbl() {
+    var login_password = $("#login_password").val();
+    if (login_password.length >= 8) {
+        $("#login").attr("disabled", false)
+    } else {                 
+        $("#login").attr("disabled", true)
+    }
+}</code></pre>  
+    <br><br>
+    </div>  
+</div>  
+
+<div class="row">
+    <div>
+        <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_2')">
+            <i class="far fa-file-code fa-2x" ></i> 
+            Django Form Customization: <br>
+        </a>
+    </div>
+    <div class="code_block mb-4 w-100" id="block_2">
+    <pre>
+<code class="language-python text-left mb-1">def __init__(self, *args, **kwargs):
+    super(Register_Form, self).__init__(*args, **kwargs)
+    for name in self.fields.keys():
+        self.fields[name].widget.attrs.update({
+            'class' : 'form-control',
+        })
+    self.fields['reg_password'].widget.attrs.update({
+        'id': 'reg_password',
+    })
+    self.fields['check_pass_r'].widget.attrs.update({
+        'class' : 'form-control',
+        'id': 'check_pass_r',
+        'onChange': 'checkPass();'
+    })</code></pre>  
+    <br><br>
+    </div>  
+</div>
+
+<div class="row">
+    <div>
+        <a href="javascript:void(0)" class="link-light" onclick="toggleCode('#block_3')">
+            <i class="far fa-file-code fa-2x" ></i> 
+            Validate User Login: <br>
+        </a>
+    </div>
+    <div class="code_block mb-4 w-100" id="block_3">
+    <pre>
+<code class="language-python text-left mb-1">def validate_login(request):
+    if request.method != "POST":
+        return redirect("login")
+    check_form = Login_Form(request.POST)
+    if not check_form.is_valid():
+        register_form = Register_Form()
+        context = { 
+            'login_form' : check_form,
+            'nav': get_nav(request),
+            }
+        return render(request, 'login.html', context)
+    else:
+        user = User.objects.get(email=request.POST['login_email'])
+        request.session["user_id"] = user.id
+        return redirect('/dashboard')</code></pre>  
+    <br><br>
+    </div>  
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

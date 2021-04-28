@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/loginstyle.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <script src="{% static 'js/nav.js' %}"></script>
+    <title>{{ page_title }}</title>
+    <script>
+        $(document).ready(function() {
+            
+            $('#nav_links').prepend('<li class="nav-item"><a class="nav-item btn btn-outline-light ml-2" href="{% url "new_trip" %}">New Trip</a></li>');
+            $('#nav_links').prepend('<li class="nav-item"><a class="nav-item btn btn-outline-light ml-2" href="{% url "trip_dash" %}">All Trips</a></li>');
+        });
+    </script>
+</head>
+<body>
+    <div class="navigation">
+        {% block navbar %}
+        {% include 'nav_demo.html' %}
+        {% endblock navbar%}
+    </div>
+    <div class="info_bar">
+        {% block infobar %}
+        {% include 'trip_info.html' %}
+        {% endblock infobar %}
+    </div>
+    <div class="row justify-content-center mx-1">
+        <div class="col-md-10">
+            <h4>{{ trip.destination }}</h4>
+            {% if trip.planned_by.id == user.id %}
+                {% if delete is True %}
+                    <div class="row">
+                        <div class="col-md-8 justify-content-between">
+                            <h4 class="text-danger">Are you sure you want to delete this trip?</h4>
+                            <a href='{% url "trip_dash" %}' class="btn btn-primary px-2">Cancel</a>
+                            <a href='{% url "remove_trip" trip.id %}' class="btn btn-danger px-2">Delete</a>
+                        </div>
+                    </div>
+                {% endif %}
+                <a href='{% url "edit_trip" trip.id %}'>Edit Trip</a>
+            {% endif %}
+        </div>
+        <div class="col-md-10 border">
+            <div class="col-md-5 d-flex justify-content-between">
+                <span>Start Date: </span>
+                <span> {{ trip.start_date|date:"M d Y" }} </span>
+            </div>
+            <div class="col-md-5 d-flex justify-content-between">
+                <span>End Date: </span>
+                <span> {{ trip.end_date|date:"M d Y" }} </span>
+            </div>
+            <div class="col-md-5 d-flex justify-content-between">
+                <span>Created On: </span>
+                <span> {{ trip.created_at|date:"M d Y" }} </span>
+            </div>
+            <div class="col-md-5 d-flex justify-content-between">
+                <span>Last Updated: </span>
+                <span> {{ trip.updated_at|date:"M d Y" }} </span>
+            </div>
+            <div class="col-md-5 d-flex justify-content-between">
+                <span>Destination: </span>
+                <span> {{ trip.destination }} </span>
+            </div>
+            <div class="col-md-8">
+                <p>Plan: </p>
+                <p class="px-2">{{ trip.details }} </p>
+            </div>
+            <div class="col-md-5 d-flex justify-content-between">
+                <span>Created by: </span>
+                <span> {{ trip.planned_by.full_name }} </span>
+            </div>
+        </div>        
+    </div>
+    <div class="row justify-content-center mx-1">
+        <div class="col-md-10 border">
+            <p>People who have joined this trip: </p>
+            <div class="col ml-2">
+                {% for joined in trip.joined_by.all %}
+                    {% if not joined.id == user.id %}
+                        {{ joined.full_name }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>  
+</body>
+</html>
